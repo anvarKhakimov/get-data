@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 
 app.get('/', function(req, res){
-	res.send('Hello world!');
+	res.send('Hello world! <br/> now go to /data/1392872400000/1393509064727');
 });
 
 app.get('/data/:start/:end', function(req, res){
@@ -31,18 +31,24 @@ function getDataByDate(start, end){
 
 	// lead to the next full hour
 	if( !isFullHours ) {
-		fullHours.setUTCMinutes(0)
+		fullHours.setUTCMinutes(0);
 		fullHours.setUTCHours( new Date(start).getUTCHours() + 1 );
 	}
 
 	// (60*60*1000) - one hour
 	// @todo change results to 
-	for( var i = 0; i + fullHours.getTime() <= end; i += (60*60*1000) ){
-		if( i == 0 ) result[ new Date(start)] = start;
-		result[ new Date(i + fullHours.getTime()) ] = i;
-	}
+	var counter = 0;
+	var increase = Math.PI * 2 / 100;
 
-	if( !isFullHours ) result[ new Date(end) ] = end;
+	for( var i = 0; i + fullHours.getTime() <= end; i += (60*60*1000) ){
+
+		// first piece
+		if( i == 0 ) result[ new Date(start)] = (Math.sin( counter ) / 2 + 0.5) * 10;
+		result[ new Date(i + fullHours.getTime()) ] = (Math.sin( counter ) / 2 + 0.5) * 10;
+		counter += increase;
+		// last piece
+		if( (i + 0*60*1000)<= end && !isFullHours ) result[ new Date(end) ] = end;
+	}	
 
 	return result;
 }
