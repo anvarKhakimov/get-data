@@ -5,7 +5,7 @@ var app = express();
 app.enable("jsonp callback");
 
 app.get('/', function(req, res){
-	res.send('Hello world! <br/> now go to /data/1392872400000/1393509064727');
+	res.send('<h1>Hello user!</h1> Nice to meet you. This is the app, that will send you random data depending on the params of timestamp. </br> Example: go to <code>/data/1392872400000/1393509064727</code> and grab the data.');
 });
 
 app.get('/data/:start/:end', function(req, res){
@@ -14,9 +14,6 @@ app.get('/data/:start/:end', function(req, res){
 	start = parseInt( req.route.params.start );
 	end = parseInt( req.route.params.end );
 	jsonCallback = req.query.callback;
-
-	//start = new Date(2014,2,20,11,0,0).getTime();
-	//end = new Date(2014,2,20,11,0,0).getTime();
 
 	result = getDataByDate(start, end);
 	res.jsonp(200, result)
